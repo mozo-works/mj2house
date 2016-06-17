@@ -14,7 +14,7 @@
     "require": {
         "composer/installers": "~1.0",
         "derhasi/composer-preserve-paths": "0.1.*",
-        "drupal/drupal": "7.*",
+        "drupal/drupal": "7.44.0",
         "drupal/auto_nodetitle": "7.1.*",
         "drupal/ctools": "7.1.*",
         "drupal/fancybox": "7.2.*",
@@ -23,12 +23,14 @@
         "drupal/menu_block": "7.2.*",
         "drupal/mollom": "7.2.*",
         "drupal/transliteration": "7.3.*",
-        "drupal/views": "7.3.*",
-        "drupal/views_bootstrap": "7.3.*",
+        "drupal/views": "7.3.14",
+        "drupal/views_bootstrap": "7.3.1",
         "drupal/bootstrap": "7.3.*",
         "drupal-composer/drupal-security-advisories": "7.x-dev",
         "symfony/yaml": "^2.8.6",
-        "drush/drush": "7.3.0"
+        "drush/drush": "7.3.0",
+        "drupal/registry_rebuild": "^7.2",
+        "drupal/features": "7.2.10"
     },
     "conflict": {
         "drupal/core": "8.*"
@@ -41,10 +43,12 @@
             "cp ./docroot/sites/default/default.settings.php ./docroot/sites/default/settings.php",
             "cat ./settings.php >> ./docroot/sites/default/settings.php && chmod a-w ./docroot/sites/default/settings.php",
             "mkdir ./docroot/sites/default/files && chmod 777 ./docroot/sites/default/files",
+            "ln -s $(pwd)/custom-modules/ $(pwd)/docroot/sites/all/modules/custom",
+            "ln -s $(pwd)/custom-themes/ $(pwd)/docroot/sites/all/themes/custom",
             "cd ./docroot && ../vendor/bin/drush registry-rebuild && ../vendor/bin/drush fancybox-download"
         ],
         "post-update-cmd": [
-            "cd ./docroot && ./vendor/bin/drush updb && ./vendor/bin/drush cc all"
+            "cd ./docroot && ../vendor/bin/drush updb && ../vendor/bin/drush cc all"
         ]
     },
     "config": {
@@ -63,14 +67,13 @@
         },
         "preserve-paths": [
             "docroot/sites/all/modules/contrib",
+            "docroot/sites/all/modules/custom",
             "docroot/sites/all/themes/contrib",
+            "docroot/sites/all/themes/custom",
             "docroot/sites/all/libraries",
             "docroot/sites/all/drush",
             "docroot/sites/default/settings.php",
             "docroot/sites/default/files"
         ]
-    },
-    "require-dev": {
-        "drupal/registry_rebuild": "^7.2"
     }
 }
